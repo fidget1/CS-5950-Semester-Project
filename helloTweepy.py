@@ -8,7 +8,6 @@ with open("keys.json") as json_keys:
     TOKEN = data["access_token"]
     ACC_SECRET = data["access_secret"]
 
-
 auth = tweepy.OAuthHandler(KEY, SECRET)
 auth.set_access_token(TOKEN, ACC_SECRET)
 
