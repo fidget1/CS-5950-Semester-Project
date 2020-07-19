@@ -8,3 +8,6 @@
 *.tex
 *.aux
 *.log
+*.txt
+
+.vscode
