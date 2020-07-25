@@ -22,10 +22,29 @@
 # $ export FLASK_APP=hello.py
 # $ flask run
 
-from flask import Flask
+# Install tweepy
+# pip install tweepy
+
+# Resource url: https://api.twitter.com/1.1/search/tweets.json
+
+from flask import Flask, render_template, request, json
+import tweepy
+with open("keys.json") as json_keys:
+    data = json.load(json_keys)
+    KEY = data["api_key"]
+    SECRET = data["api_secret_key"]
+    ACC_TOKEN = data["access_token"]
+    ACC_SECRET = data["access_secret"]
+    BEARER = data["bearer_token"]
+
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def index():
+    auth = tweepy.OAuthHandler(KEY, SECRET)
+    auth.set_access_token(ACC_TOKEN, ACC_SECRET)
+    api = tweepy.API(auth)
+    search = request.args.get("q")
+    public_tweets = api.user_timeline(search)
+    return render_template('home.html', tweets=public_tweets)
 
