@@ -48,7 +48,8 @@ def index():
         auth.secure = True
         api = tweepy.API(auth)
         search = request.args.get("q")
-        public_tweets = api.user_timeline(search)
+        pprint.pprint('search: ' + search)
+        public_tweets = api.search(search)
         return render_template('home.html', tweets=public_tweets)
     except tweepy.TweepError as e:
         # private tweets can be queried, but cause errors
@@ -59,7 +60,7 @@ def index():
             return render_template('home.html')
         # Sorry, that page does not exist.
         elif (e.args[0][0] and e.args[0][0]["code"] == 34):
-            pprint.pprint(e.args[0][0]["message"])
+            pprint.pprint('34:' + e.args[0][0]["message"])
             return render_template('home.html')
         else:
             pprint.pprint(e.args[0])
