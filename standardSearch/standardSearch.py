@@ -29,6 +29,7 @@
 
 from flask import Flask, render_template, request, json
 import tweepy
+import pprint
 with open("keys.json") as json_keys:
     data = json.load(json_keys)
     KEY = data["api_key"]
@@ -41,10 +42,25 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    auth = tweepy.OAuthHandler(KEY, SECRET)
-    auth.set_access_token(ACC_TOKEN, ACC_SECRET)
-    api = tweepy.API(auth)
-    search = request.args.get("q")
-    public_tweets = api.user_timeline(search)
-    return render_template('home.html', tweets=public_tweets)
-
+    try:
+        auth = tweepy.OAuthHandler(KEY, SECRET)
+        auth.set_access_token(ACC_TOKEN, ACC_SECRET)
+        auth.secure = True
+        api = tweepy.API(auth)
+        search = request.args.get("q")
+        public_tweets = api.user_timeline(search)
+        return render_template('home.html', tweets=public_tweets)
+    except tweepy.TweepError as e:
+        # private tweets can be queried, but cause errors
+        # also tweets from suspended or banned users
+        # it appears the search breaks when any tweets are private
+        if (e.args[0] == "Not authorized."):
+            pprint.pprint(e.args[0])
+            return render_template('home.html')
+        # Sorry, that page does not exist.
+        elif (e.args[0][0] and e.args[0][0]["code"] == 34):
+            pprint.pprint(e.args[0][0]["message"])
+            return render_template('home.html')
+        else:
+            pprint.pprint(e.args[0])
+            return render_template('home.html') 
