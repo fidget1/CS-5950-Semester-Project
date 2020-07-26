@@ -10,4 +10,29 @@
 *.log
 *.txt
 
+# dependencies
+react-flask-app/node_modules
+react-flask-app/.pnp
+react-flask-app/.pnp.js
+
+# testing
+react-flask-app/coverage
+
+# production
+react-flask-app/build
+
+# misc
+react-flask-app/.DS_Store
+react-flask-app/.env.local
+react-flask-app/.env.development.local
+react-flask-app/.env.test.local
+react-flask-app/.env.production.local
+
+react-flask-app/npm-debug.log*
+react-flask-app/yarn-debug.log*
+react-flask-app/yarn-error.log*
+
+
 .vscode
+react-flask-app/venv
+react-flask-app/__pychache__
