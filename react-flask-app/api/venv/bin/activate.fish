@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/reptar/Documents/Big Data/CS-5950-Semester-Project/react-flask-app/api/venv"
+set -gx VIRTUAL_ENV "/home/reptar/CS-5950-Semester-Project/react-flask-app/api/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

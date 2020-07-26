@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/home/reptar/Documents/Big Data/CS-5950-Semester-Project/react-flask-app/api/venv/bin/python3" "$0" "$@"
-' '''
+#!/home/reptar/CS-5950-Semester-Project/react-flask-app/api/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
