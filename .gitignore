@@ -4,7 +4,6 @@
 *.xlsx
 *.xls
 *.pdf
-*.json
 *.tex
 *.aux
 *.log
@@ -14,6 +13,8 @@
 react-flask-app/node_modules
 react-flask-app/.pnp
 react-flask-app/.pnp.js
+react-flask-app/venv
+reach-flask-app/__pycache__
 
 # testing
 react-flask-app/coverage
