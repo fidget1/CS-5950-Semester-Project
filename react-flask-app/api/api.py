@@ -35,7 +35,7 @@ class MyStreamListener(tweepy.StreamListener):
         all_data = json.loads(data)
         tweet = all_data["text"]
         user = all_data["user"]["screen_name"]
-        print((user, tweet))
+        print(user, tweet)
         return True
     
     def on_error(self, status):
