@@ -9,7 +9,7 @@ with open("keys.json") as json_keys:
     SECRET = data["api_secret_key"]
     ACC_TOKEN = data["access_token"]
     ACC_SECRET = data["access_secret"]
-    BEARER = data["bearer_token"]
+
 
 app = Flask(__name__)
 
