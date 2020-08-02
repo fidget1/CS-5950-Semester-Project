@@ -1,0 +1,2 @@
+# Allow Access from localhost (for testing)
+Header set Access-Control-Allow-Origin: *
