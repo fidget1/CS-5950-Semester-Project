@@ -14,7 +14,9 @@ def open_db():
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "user TEXT NOT NULL,"
                 "text TEXT NOT NULL,"
-            "retweeted TEXT NOT NULL"
+                "retweeted TEXT NOT NULL,"
+                "score FLOAT NOT NULL,"
+                "magnitude FLOAT NOT NULL"
             ");"
         )
         return con

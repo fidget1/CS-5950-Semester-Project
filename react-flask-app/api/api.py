@@ -3,6 +3,10 @@ from flask import Flask, request, json, g
 import tweepy
 import sqlite3
 import db
+# from xml.etree import ElementTree
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
 
 with open("keys.json") as json_keys:
     data = json.load(json_keys)
@@ -32,7 +36,7 @@ class MyStreamListener(tweepy.StreamListener):
     # this.cur =
     def on_data(self, status):
         con = db.open_db()
-        print(status)
+        # print(status)
         tweet = json.loads(status)
         # only return non-retweeted tweets
         if tweet["retweeted"]:
@@ -43,9 +47,18 @@ class MyStreamListener(tweepy.StreamListener):
         retweeted = tweet["retweeted"]
 
         # get sentiment analysis
-        # get db
+        client = language.LanguageServiceClient()
+        document = types.Document(
+            content=text,
+            type=enums.Document.Type.PLAIN_TEXT
+        )
+        sentiment = client.analyze_sentiment(document=document).document_sentiment
+
+        print('Text: {}'.format(text))
+        print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
+
         try:
-            con.cursor().execute("INSERT into tweets (user, text, retweeted) values (?,?,?)", (user, text, retweeted))
+            con.cursor().execute("INSERT into tweets (user, text, retweeted, score, magnitude) values (?,?,?,?,?)", (user, text, retweeted, sentiment.score, sentiment.magnitude))
             con.commit()
             print("Successful insert")
         except IOError as e:
