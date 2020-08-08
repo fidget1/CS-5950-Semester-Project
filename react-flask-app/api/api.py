@@ -1,5 +1,5 @@
 import time
-from flask import Flask, request, json, g
+from flask import Flask, request, json, g, jsonify
 import tweepy
 import db
 import multiprocessing
@@ -19,8 +19,13 @@ app = Flask(__name__)
 
 @app.route('/api')
 def api():
-    con = db.connect_db()
     q = request.args.get("q")
+    con = db.connect_db()
+    cur = con.cursor()
+    cur.execute("SELECT MAX(id) FROM tweets")
+    max_id = None
+    for id in cur:
+        max_id = id[0]
     auth = tweepy.OAuthHandler(KEY, SECRET)
     auth.set_access_token(ACC_TOKEN, ACC_SECRET)
     tweepy_api = tweepy.API(auth)
@@ -32,9 +37,12 @@ def api():
     time.sleep(5)
     p.terminate()
     p.join()
-    con.close()
+    cur.execute("SELECT id, search_term, text, score, magnitude  FROM tweets WHERE id > ?", (max_id,))
+    response_objects = []
+    for (id, search_term, text, score, magnitude) in cur:
+        response_objects.append(json.dumps({"id": id, "search_term": search_term, "text": text, "score": score, "magnitude": magnitude}))
     # for testing, when return is False for stream lister, on data
-    return "hello"
+    return jsonify(response_objects)
 
 
 class MyStreamListener(tweepy.StreamListener):
@@ -44,22 +52,13 @@ class MyStreamListener(tweepy.StreamListener):
         self.con = con
         self.q = query
 
-    # def init_counter(self):
-        # self.count = 0
-
-    # def set_queue(self, query):
-        # self.q = query
-
     def on_data(self, status):
-        print(tweepy.StreamListener)
         tweet = json.loads(status)
         if tweet["retweeted"]:
-            print(time.time() - self.start_time)
             return True
         user = tweet["user"]["screen_name"]
         text = tweet["text"]
         retweeted = tweet["retweeted"]
-        print(text)
         client = language.LanguageServiceClient()
         document = types.Document(
             content=text,
@@ -71,7 +70,6 @@ class MyStreamListener(tweepy.StreamListener):
             self.con.cursor().execute("INSERT into tweets (search_term, user, text, retweeted, score, magnitude) values (?,?,?,?,?,?)", (self.q, user, text, retweeted, sentiment.score, sentiment.magnitude))
             self.con.commit()
             self.count += 1
-            print(self.count)
             if self.count > 100:
                 self.con.close()
                 return False
