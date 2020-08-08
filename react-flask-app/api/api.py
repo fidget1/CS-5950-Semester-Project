@@ -1,9 +1,8 @@
 import time
 from flask import Flask, request, json, g
 import tweepy
-import sqlite3
 import db
-# from xml.etree import ElementTree
+import multiprocessing
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
@@ -20,33 +19,47 @@ app = Flask(__name__)
 
 @app.route('/api')
 def api():
-    db.open_db()
-    print("db creation completed")
+    con = db.connect_db()
+    q = request.args.get("q")
     auth = tweepy.OAuthHandler(KEY, SECRET)
     auth.set_access_token(ACC_TOKEN, ACC_SECRET)
     tweepy_api = tweepy.API(auth)
-    my_stream_listener = MyStreamListener()
+    my_stream_listener = MyStreamListener(tweepy.StreamListener)
+    my_stream_listener.init_class(con, q)
     my_stream = tweepy.Stream(auth=tweepy_api.auth, listener=my_stream_listener)
-    my_stream.filter(track=['Obama'])
+    p = multiprocessing.Process(target=my_stream.filter, name="filter", kwargs={"track": [q], "languages": ["en"]})
+    p.start()
+    time.sleep(5)
+    p.terminate()
+    p.join()
+    con.close()
     # for testing, when return is False for stream lister, on data
     return "hello"
 
 
 class MyStreamListener(tweepy.StreamListener):
-    # this.cur =
+
+    def init_class(self, con, query):
+        self.count = 0
+        self.con = con
+        self.q = query
+
+    # def init_counter(self):
+        # self.count = 0
+
+    # def set_queue(self, query):
+        # self.q = query
+
     def on_data(self, status):
-        con = db.open_db()
-        # print(status)
+        print(tweepy.StreamListener)
         tweet = json.loads(status)
-        # only return non-retweeted tweets
         if tweet["retweeted"]:
+            print(time.time() - self.start_time)
             return True
-        # get data
         user = tweet["user"]["screen_name"]
         text = tweet["text"]
         retweeted = tweet["retweeted"]
-
-        # get sentiment analysis
+        print(text)
         client = language.LanguageServiceClient()
         document = types.Document(
             content=text,
@@ -54,20 +67,18 @@ class MyStreamListener(tweepy.StreamListener):
         )
         sentiment = client.analyze_sentiment(document=document).document_sentiment
 
-        print('Text: {}'.format(text))
-        print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
-
         try:
-            con.cursor().execute("INSERT into tweets (user, text, retweeted, score, magnitude) values (?,?,?,?,?)", (user, text, retweeted, sentiment.score, sentiment.magnitude))
-            con.commit()
-            print("Successful insert")
+            self.con.cursor().execute("INSERT into tweets (search_term, user, text, retweeted, score, magnitude) values (?,?,?,?,?,?)", (self.q, user, text, retweeted, sentiment.score, sentiment.magnitude))
+            self.con.commit()
+            self.count += 1
+            print(self.count)
+            if self.count > 100:
+                self.con.close()
+                return False
         except IOError as e:
-            con.rollback()
+            self.con.rollback()
             print("Insert failed: " + str(e))
 
-
-        # Testing
-        # return False
         return True
 
     def on_error(self, status):
