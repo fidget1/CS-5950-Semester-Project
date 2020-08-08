@@ -17,14 +17,32 @@ class TwForm extends React.Component {
       filter: '',
       processing: false,
       error: null,
-      data: null
+      data: []
     };
 
+    // Bindings
+    this.addData = this.addData.bind(this);
+    this.clearData = this.clearData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmitTest = this.handleSubmitTest.bind(this);
     this.handleCallToFlassk = this.handleCallToFlask.bind(this);
   }
 
+  addData(result) {
+    var tweetText = "";
+    for (var sentence of result.sentences) {
+      tweetText = tweetText.concat(sentence.text.content + " ");
+    }
+
+    return {
+      "documentSentiment" : result.documentSentiment,
+      "text" : tweetText
+    };
+  }
+
+  clearData(result) {
+
+  }
   // Alters the "filter" state upon change
   handleChange(event) {
     this.setState({filter: event.target.value});
@@ -32,11 +50,14 @@ class TwForm extends React.Component {
 
   // Simulates a submission by sending dummy JSON data to TwGraph
   handleSubmitTest(event) {
-    this.setState({processing: true});
-    this.handleCallToFlask();
+    if (!this.state.processing) {
+      this.setState({processing: true});
+      this.handleCallToFlask();
+    }
     event.preventDefault();
   }
   
+  // Repeatedly calls flask until flasks returns processing: false
   handleCallToFlask() {
     fetch("http://127.0.0.1:5000/get_test_data")
     .then(res => res.json())
@@ -45,9 +66,9 @@ class TwForm extends React.Component {
       (result) => {
         this.setState({
           processing: result.processing,
-          data: result,
+          data: this.state.data.concat(this.addData(result))
         });
-        console.log(this.state.processing);
+        console.log(this.state.data);
 
         if (this.state.processing) {
           this.handleCallToFlask();
