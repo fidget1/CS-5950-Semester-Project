@@ -15,38 +15,52 @@ class TwForm extends React.Component {
     super(props);
     this.state = {
       filter: '',
+      processing: false,
       error: null,
-      data: []
+      data: null
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmitTest = this.handleSubmitTest.bind(this);
+    this.handleCallToFlassk = this.handleCallToFlask.bind(this);
   }
 
   // Alters the "filter" state upon change
   handleChange(event) {
-    this.setState({filter: event.target.value})
+    this.setState({filter: event.target.value});
   }
 
   // Simulates a submission by sending dummy JSON data to TwGraph
   handleSubmitTest(event) {
+    this.setState({processing: true});
+    this.handleCallToFlask();
+    event.preventDefault();
+  }
+  
+  handleCallToFlask() {
     fetch("http://127.0.0.1:5000/get_test_data")
     .then(res => res.json())
     .then(
+      // On success
       (result) => {
         this.setState({
-          data: result.items
+          processing: result.processing,
+          data: result,
         });
-        console.log(this.data);
+        console.log(this.state.processing);
+
+        if (this.state.processing) {
+          this.handleCallToFlask();
+        }
       },
+      // On failure
       (error) => {
         this.setState({
           error
         });
         console.log(error);
       }
-    )
-    event.preventDefault();
+    )   
   }
 
   render() {
