@@ -1,132 +1,121 @@
-import * as d3 from "d3"
-import logo from './logo.svg';
-import React from 'react';
-import './App.css';
-
-// =========================================================================================
-// Form
+// File:        App.js
+// Author:      Jeremy Evans
 //
-// Simple form consisting of a text area that allows the user to enter a set of search
-// filters (current: 1). Upon submission, it builds a request in the form of JSON containing
-// the filters and sends it to the backend.
+// Description: Primary component of the application, containing both the form and the
+//              graph (this is done to address the issue of sharing state across
+//              the two without the use of ES6 classes for the sake of time).
+//           
+// ===================================================================================
 
-class TwForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filter: '',
-      processing: false,
-      error: null,
-      data: []
-    };
+import React from 'react';
+import * as d3 from "d3"
+import './TwForm.css';
+import './TwGraph.css';
 
-    // Bindings
-    this.addData = this.addData.bind(this);
-    this.clearData = this.clearData.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmitTest = this.handleSubmitTest.bind(this);
-    this.handleCallToFlassk = this.handleCallToFlask.bind(this);
-  }
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            filter: '',
+            processing: false,
+            error: null,
+            data: []
+        };
 
-  addData(result) {
-    var tweetText = "";
-    for (var sentence of result.sentences) {
-      tweetText = tweetText.concat(sentence.text.content + " ");
+        // Bindings: TwForm
+        this.addData = this.addData.bind(this);
+        this.clearData = this.clearData.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCallToFlask = this.handleCallToFlask.bind(this);
     }
 
-    return {
-      "documentSentiment" : result.documentSentiment,
-      "text" : tweetText
-    };
-  }
+    // ===============================================================================
+    // TWFORM
+    // ===============================================================================
 
-  clearData(result) {
-
-  }
-  // Alters the "filter" state upon change
-  handleChange(event) {
-    this.setState({filter: event.target.value});
-  }
-
-  // Simulates a submission by sending dummy JSON data to TwGraph
-  handleSubmitTest(event) {
-    if (!this.state.processing) {
-      this.setState({processing: true});
-      this.handleCallToFlask();
-    }
-    event.preventDefault();
-  }
-  
-  // Repeatedly calls flask until flasks returns processing: false
-  handleCallToFlask() {
-    fetch("http://127.0.0.1:5000/get_test_data")
-    .then(res => res.json())
-    .then(
-      // On success
-      (result) => {
-        this.setState({
-          processing: result.processing,
-          data: this.state.data.concat(this.addData(result))
-        });
-        console.log(this.state.data);
-
-        if (this.state.processing) {
-          this.handleCallToFlask();
+    addData(result) {
+        var tweetText = "";
+        for (var sentence of result.sentences) {
+            tweetText = tweetText.concat(sentence.text.content + " ");
         }
-      },
-      // On failure
-      (error) => {
-        this.setState({
-          error
-        });
-        console.log(error);
-      }
-    )   
-  }
 
-  render() {
-    return (
-      <section id="tw-form">
-        <div id="tw-form-container">
-          <h3>Filter Input</h3>
-          <form onSubmit={this.handleSubmitTest}>
-            <div className="tw-form-box">
-              <input type="text" value={this.state.filter} onChange={this.handleChange} placeholder="e.g. Fortnite" required/>
-              <label>Filter</label>
-            </div>
-            <input type="submit" value="Submit"/>
-          </form>
-        </div>
-      </section>
-    );
-  }
-}
+        return {
+            "documentSentiment" : result.documentSentiment,
+            "text" : tweetText
+        };
+    }
 
-// =========================================================================================
-// Display (Graph)
+    clearData() {
+        this.setState({data: []});
+    }
 
-class TwGraph extends React.Component {
-  render() {
-    return (
-      <section id="tw-graph">
-        <div id="tw-graph-container">
+    // Alters the "filter" state upon change
+    handleChange(event) {
+        this.setState({filter: event.target.value});
+    }
 
-        </div>
-      </section>
-    );
-  }
-}
+    // Simulates a submission by sending dummy JSON data to TwGraph
+    handleSubmit(event) {
+        if (!this.state.processing) {
+            this.setState({processing: true});
+            this.clearData();
+            this.handleCallToFlask();
+        }
+        event.preventDefault();
+    }
 
-// =========================================================================================
-// Render (esentially a "main")
+    // Repeatedly calls flask until flasks returns processing: false
+    handleCallToFlask() {
+        fetch("http://127.0.0.1:5000/get_test_data")
+        .then(res => res.json())
+        .then(
+            // On success
+            (result) => {
+                this.setState({
+                    processing: result.processing,
+                    data: this.state.data.concat(this.addData(result))
+                });
+                console.log(this.state.data);
 
-function App() {
-  return (
-    <div className="App">
-      <TwForm/>
-      {/* <TwGraph/> */}
-    </div>
-  );
+                if (this.state.processing) {
+                    this.handleCallToFlask();
+                }
+            },
+            // On failure
+            (error) => {
+                this.setState({
+                    error
+                });
+                console.log(error);
+            }
+        )   
+    }
+
+    // ===============================================================================
+    // TWGRAPH
+    // ===============================================================================
+
+    // ===============================================================================
+    // RENDER
+    // ===============================================================================
+
+    render() {
+        return (
+            <section id="tw-form">
+                <div id="tw-form-container">
+                    <h3>Filter Input</h3>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="tw-form-box">
+                            <input type="text" value={this.state.filter} onChange={this.handleChange} placeholder="e.g. Fortnite" required/>
+                            <label>Filter</label>
+                        </div>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                </div>
+            </section>
+        );
+    }
 }
 
 export default App;
