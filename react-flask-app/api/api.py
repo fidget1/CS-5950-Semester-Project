@@ -1,5 +1,5 @@
 import time
-from flask import Flask, request, json, g, jsonify
+from flask import Flask, request, json, g, jsonify, render_template
 import tweepy
 import db
 import multiprocessing
@@ -26,23 +26,30 @@ def api():
     max_id = None
     for id in cur:
         max_id = id[0]
+    print(max_id)
     auth = tweepy.OAuthHandler(KEY, SECRET)
     auth.set_access_token(ACC_TOKEN, ACC_SECRET)
     tweepy_api = tweepy.API(auth)
     my_stream_listener = MyStreamListener(tweepy.StreamListener)
     my_stream_listener.init_class(con, q)
     my_stream = tweepy.Stream(auth=tweepy_api.auth, listener=my_stream_listener)
-    p = multiprocessing.Process(target=my_stream.filter, name="filter", kwargs={"track": [q], "languages": ["en"]})
-    p.start()
-    time.sleep(5)
-    p.terminate()
-    p.join()
+    try:
+        p = multiprocessing.Process(target=my_stream.filter, name="filter", kwargs={"track": [q], "languages": ["en"]})
+        p.start()
+        time.sleep(5)
+        p.terminate()
+        p.join()
+    except:
+        print("Processing error: ")
     cur.execute("SELECT id, search_term, text, score, magnitude  FROM tweets WHERE id > ?", (max_id,))
     response_objects = []
     for (id, search_term, text, score, magnitude) in cur:
         response_objects.append(json.dumps({"id": id, "search_term": search_term, "text": text, "score": score, "magnitude": magnitude}))
     # for testing, when return is False for stream lister, on data
-    return jsonify(response_objects)
+    # json_resp = {"data": response_objects}
+    # resp = json.dumps(response_objects)
+    # resp = json.loads(resp)
+    return jsonify(response_objects)# render_template("home.html", resp=resp)
 
 
 class MyStreamListener(tweepy.StreamListener):
@@ -54,11 +61,12 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_data(self, status):
         tweet = json.loads(status)
-        if tweet["retweeted"]:
-            return True
-        user = tweet["user"]["screen_name"]
         text = tweet["text"]
-        retweeted = tweet["retweeted"]
+        user = tweet["user"]["screen_name"]
+        retweet = tweet["retweeted"]
+        rt = "RT @"
+        if rt in text:
+            return True
         client = language.LanguageServiceClient()
         document = types.Document(
             content=text,
@@ -67,7 +75,7 @@ class MyStreamListener(tweepy.StreamListener):
         sentiment = client.analyze_sentiment(document=document).document_sentiment
 
         try:
-            self.con.cursor().execute("INSERT into tweets (search_term, user, text, retweeted, score, magnitude) values (?,?,?,?,?,?)", (self.q, user, text, retweeted, sentiment.score, sentiment.magnitude))
+            self.con.cursor().execute("INSERT into tweets (search_term, user, text, score, magnitude, retweeted) values (?,?,?,?,?,?)", (self.q, user, text, sentiment.score, sentiment.magnitude, retweet))
             self.con.commit()
             self.count += 1
             if self.count > 100:
@@ -103,5 +111,7 @@ class MyStreamListener(tweepy.StreamListener):
             print("service unavailable: " + str(status))
         elif status == 504:
             print("gateway timeoff: " + str(status))
+        else:
+            print("other error: " + str(status))
 
         return False
