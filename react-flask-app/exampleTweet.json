@@ -1,0 +1,233 @@
+{
+   "created_at":"Sat Aug 01 19:33:31 +0000 2020",
+   "id":1289645456419561472,
+   "id_str":"1289645456419561472",
+   "text":"RT @sdr_medco: @realDonaldTrump WTF are you blabbing about ? LOL \ud83e\udd23 You never ran against Obama. It\u2019s no competition either. He\u2019s everything\u2026",
+   "source":"\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+   "truncated":false,
+   "in_reply_to_status_id":null,
+   "in_reply_to_status_id_str":null,
+   "in_reply_to_user_id":null,
+   "in_reply_to_user_id_str":null,
+   "in_reply_to_screen_name":null,
+   "user":{
+      "id":345379211,
+      "id_str":"345379211",
+      "name":"Susan Phelps",
+      "screen_name":"sphelps0",
+      "location":null,
+      "url":null,
+      "description":"Retired Security Analyst\/activist #Resist #MoscowMitch #DonTheCon No DMs",
+      "translator_type":"none",
+      "protected":false,
+      "verified":false,
+      "followers_count":1290,
+      "friends_count":2720,
+      "listed_count":1,
+      "favourites_count":4195,
+      "statuses_count":7779,
+      "created_at":"Sat Jul 30 14:07:15 +0000 2011",
+      "utc_offset":null,
+      "time_zone":null,
+      "geo_enabled":false,
+      "lang":null,
+      "contributors_enabled":false,
+      "is_translator":false,
+      "profile_background_color":"000000",
+      "profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+      "profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+      "profile_background_tile":false,
+      "profile_link_color":"1B95E0",
+      "profile_sidebar_border_color":"000000",
+      "profile_sidebar_fill_color":"000000",
+      "profile_text_color":"000000",
+      "profile_use_background_image":false,
+      "profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/1161399265110962176\/_4uMJA5x_normal.jpg",
+      "profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/1161399265110962176\/_4uMJA5x_normal.jpg",
+      "profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/345379211\/1565734107",
+      "default_profile":false,
+      "default_profile_image":false,
+      "following":null,
+      "follow_request_sent":null,
+      "notifications":null
+   },
+   "geo":null,
+   "coordinates":null,
+   "place":null,
+   "contributors":null,
+   "retweeted_status":{
+      "created_at":"Sat Aug 01 00:38:43 +0000 2020",
+      "id":1289359873587601409,
+      "id_str":"1289359873587601409",
+      "text":"@realDonaldTrump WTF are you blabbing about ? LOL \ud83e\udd23 You never ran against Obama. It\u2019s no competition either. He\u2019s e\u2026 https:\/\/t.co\/dF3HRVUmEE",
+      "display_text_range":[
+         17,
+         140
+      ],
+      "source":"\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+      "truncated":true,
+      "in_reply_to_status_id":1289358246541553664,
+      "in_reply_to_status_id_str":"1289358246541553664",
+      "in_reply_to_user_id":25073877,
+      "in_reply_to_user_id_str":"25073877",
+      "in_reply_to_screen_name":"realDonaldTrump",
+      "user":{
+         "id":1113259788,
+         "id_str":"1113259788",
+         "name":"\ud83c\udf37\ud83e\udd8b Sheila \ud83e\udd8b\ud83c\udf37",
+         "screen_name":"sdr_medco",
+         "location":"United States",
+         "url":null,
+         "description":"Married \ud83c\udf0a Ask before adding me to a DM group\ud83c\udf0a #MailInBallots \ud83c\udf0a #BlackLivesMatter \ud83c\udf0a #COVID19IsReal\ud83c\udf0a #Biden2020 \ud83c\udf0a#FlipTheSenateBlue \ud83c\udf0a #VoteThemAllOut",
+         "translator_type":"none",
+         "protected":false,
+         "verified":false,
+         "followers_count":54084,
+         "friends_count":41144,
+         "listed_count":32,
+         "favourites_count":92713,
+         "statuses_count":59214,
+         "created_at":"Wed Jan 23 02:55:41 +0000 2013",
+         "utc_offset":null,
+         "time_zone":null,
+         "geo_enabled":false,
+         "lang":null,
+         "contributors_enabled":false,
+         "is_translator":false,
+         "profile_background_color":"000000",
+         "profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+         "profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+         "profile_background_tile":false,
+         "profile_link_color":"9266CC",
+         "profile_sidebar_border_color":"000000",
+         "profile_sidebar_fill_color":"000000",
+         "profile_text_color":"000000",
+         "profile_use_background_image":false,
+         "profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/1288996765400805381\/N7I8Dr49_normal.jpg",
+         "profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/1288996765400805381\/N7I8Dr49_normal.jpg",
+         "profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/1113259788\/1593360861",
+         "default_profile":false,
+         "default_profile_image":false,
+         "following":null,
+         "follow_request_sent":null,
+         "notifications":null
+      },
+      "geo":null,
+      "coordinates":null,
+      "place":null,
+      "contributors":null,
+      "is_quote_status":false,
+      "extended_tweet":{
+         "full_text":"@realDonaldTrump WTF are you blabbing about ? LOL \ud83e\udd23 You never ran against Obama. It\u2019s no competition either. He\u2019s everything sensibly great &amp; you\u2019re everything disgusting. You cannot ever be the person or President Obama was &amp; is . Dream on....",
+         "display_text_range":[
+            17,
+            252
+         ],
+         "entities":{
+            "hashtags":[
+
+            ],
+            "urls":[
+
+            ],
+            "user_mentions":[
+               {
+                  "screen_name":"realDonaldTrump",
+                  "name":"Donald J. Trump",
+                  "id":25073877,
+                  "id_str":"25073877",
+                  "indices":[
+                     0,
+                     16
+                  ]
+               }
+            ],
+            "symbols":[
+
+            ]
+         }
+      },
+      "quote_count":1,
+      "reply_count":7,
+      "retweet_count":24,
+      "favorite_count":173,
+      "entities":{
+         "hashtags":[
+
+         ],
+         "urls":[
+            {
+               "url":"https:\/\/t.co\/dF3HRVUmEE",
+               "expanded_url":"https:\/\/twitter.com\/i\/web\/status\/1289359873587601409",
+               "display_url":"twitter.com\/i\/web\/status\/1\u2026",
+               "indices":[
+                  117,
+                  140
+               ]
+            }
+         ],
+         "user_mentions":[
+            {
+               "screen_name":"realDonaldTrump",
+               "name":"Donald J. Trump",
+               "id":25073877,
+               "id_str":"25073877",
+               "indices":[
+                  0,
+                  16
+               ]
+            }
+         ],
+         "symbols":[
+
+         ]
+      },
+      "favorited":false,
+      "retweeted":false,
+      "filter_level":"low",
+      "lang":"en"
+   },
+   "is_quote_status":false,
+   "quote_count":0,
+   "reply_count":0,
+   "retweet_count":0,
+   "favorite_count":0,
+   "entities":{
+      "hashtags":[
+
+      ],
+      "urls":[
+
+      ],
+      "user_mentions":[
+         {
+            "screen_name":"sdr_medco",
+            "name":"\ud83c\udf37\ud83e\udd8b Sheila \ud83e\udd8b\ud83c\udf37",
+            "id":1113259788,
+            "id_str":"1113259788",
+            "indices":[
+               3,
+               13
+            ]
+         },
+         {
+            "screen_name":"realDonaldTrump",
+            "name":"Donald J. Trump",
+            "id":25073877,
+            "id_str":"25073877",
+            "indices":[
+               15,
+               31
+            ]
+         }
+      ],
+      "symbols":[
+
+      ]
+   },
+   "favorited":false,
+   "retweeted":false,
+   "filter_level":"low",
+   "lang":"en",
+   "timestamp_ms":"1596310411921"
+}

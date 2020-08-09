@@ -1,0 +1,23 @@
+<html>
+    <head>
+    {% if title %}
+	<title>{{ title }} - Microblog</title>
+    {% else %}
+	<title>Welcome to Microblog!</title>
+    {% endif %}
+    </head>
+    <body>
+	<h1>Hello, you!</h1>
+    {% if resp %}
+	<h2>Response found.</h2>
+	{# {% for value in resp %}
+	<p>{{ value }}</p>
+	{% endfor %} #}
+	<p>{{ resp[0] }}</p>
+
+	<table>
+	
+	</table>
+    {% endif %}
+    </body>
+</html>
