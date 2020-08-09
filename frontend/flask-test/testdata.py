@@ -80,6 +80,19 @@ class TestHandler:
         else:
             self.counter = 0
             self.processing = False
+    
+    # Determines a sentiment based on a given score. Each sentiment is given a
+    # number and defined as:
+    #
+    # Positive (4): score in [0.4, 1.0]
+    #
+    # Mixed (3): score in (-4.0, 4.0) & magnitude in (-inf, -3.0) OR (3.0, +inf)
+    #
+    # Neutral (2): score in (-4.0, 4.0) & magnitude in [-3.0, 3.0]
+    # 
+    # Negative(1):
+    def determine_sentiment(self, score, magnitude):
+        return 0
 
     # Returns dummy sentiment data
     def return_sentiment(self):
