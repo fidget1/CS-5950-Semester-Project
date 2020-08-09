@@ -1,2 +1,3 @@
 FLASK_APP=api.py
 FLASK_ENV=development
+GOOGLE_APPLICATION_CREDENTIALS=key.json

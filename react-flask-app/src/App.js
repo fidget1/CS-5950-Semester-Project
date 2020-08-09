@@ -3,19 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0)
+  const [tweets, setTweets] = useState(0)
   useEffect(() => {
-    fetch('/time').then(res => res.json()).then(data => {
-      setCurrentTime(data.time);
+    fetch('/hello').then(res => res.json()).then(data => {
+      setTweets(data.tweets);
     });
   }, []);
+  console.log({tweets})
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -24,7 +22,7 @@ function App() {
         >
           Learn React
         </a>
-	<p>The current time is {currentTime}.</p>
+	<p>The current time is {tweets}.</p>
       </header>
     </div>
   );
