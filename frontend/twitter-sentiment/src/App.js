@@ -31,7 +31,7 @@ class App extends React.Component {
         this.handleCallToFlask = this.handleCallToFlask.bind(this);
 
         // Bindings: TwGraph
-        this.addSentiment = this.addSentiment.bind(this);
+        this.updateSentiment = this.updateSentiment.bind(this);
     }
 
     // ===============================================================================
@@ -39,15 +39,20 @@ class App extends React.Component {
     // ===============================================================================
 
     addData(result) {
-        var tweetText = "";
-        for (var sentence of result.sentences) {
-            tweetText = tweetText.concat(sentence.text.content + " ");
-        }
+	let tweets = result.map(res => {return JSON.parse(res)})
+	let formatted = tweets.map(tweet => {
+		let retval = {
+			documentSentiment: {
+				score: tweet.score, 
+				magnitude: tweet.magnitude
+			},
+			text: tweet.text
+		}
+		return retval
+	})
+	console.log(formatted)
 
-        return {
-            "documentSentiment" : result.documentSentiment,
-            "text" : tweetText
-        };
+	return formatted
     }
 
     clearData() {
@@ -74,29 +79,31 @@ class App extends React.Component {
 
     // Repeatedly calls flask until flasks returns processing: false
     handleCallToFlask() {
-        fetch("http://127.0.0.1:5000/get_test_data")
+	const encodedValue = encodeURIComponent("obama")
+        fetch(`http://34.70.201.210/app/api?q=${encodedValue}`)
         .then(res => res.json())
         .then(
             // On success
             (result) => {
-                let newData = this.addData(result);
+                let newData = this.addData(result)
+		newData.forEach(data => {
+		    this.updateSentiment(data.documentSentiment)
+		})
                 this.setState({
-                    processing: result.processing,
+                    processing: true, // result.processing,
                     data: this.state.data.concat(newData),
-                    sentiments: this.addSentiment(newData.documentSentiment)
-                });
-                console.log(this.state.sentiments);
+                })
 
                 if (this.state.processing) {
-                    this.handleCallToFlask();
+                    this.handleCallToFlask()
                 }
             },
             // On failure
             (error) => {
                 this.setState({
                     error
-                });
-                console.log(error);
+                })
+                console.log(error)
             }
         )   
     }
@@ -115,7 +122,7 @@ class App extends React.Component {
     // Neutral (2): score in (-0.4, 0.4) & magnitude in [0, 3.0)
     // 
     // Negative(1): score in [-1.0, -0.4]
-    addSentiment(documentSentiment) {
+    updateSentiment(documentSentiment) {
         let posScoreMin = 0.4;
         let negScoreMax = -0.4;
         let mixedMagMin = 3.0;
@@ -143,16 +150,36 @@ class App extends React.Component {
                 updatedSentiments.neutral += 1;
             }
         }
+	
+	this.setState({
+	    sentiments: updatedSentiments
+	})
 
-        return updatedSentiments;
+        // return updatedSentiments;
     }
     // ===============================================================================
     // RENDER
     // ===============================================================================
 
     render() {
+	const newData = {
+		labels: ['January', 'February', 'March', 'April'],
+		datasets: [{
+			label: 'Rainfall',
+			backgroundColor: 'rgba(75,192,192,1)',
+			borderColor: 'rgba(0,0,0,1)',
+			borderWidth: 2,
+			data: [
+				this.state.sentiments.positive,
+				this.state.sentiments.mixed,
+				this.state.sentiments.neutral,
+				this.state.sentiments.negative
+			]
+		}]
+	}
         return (
             <div>
+		{ this.state.filter === "" || !this.state.processing ? (
                 <section id="tw-form">
                     <div id="tw-form-container">
                         <h3>Filter Input</h3>
@@ -165,15 +192,12 @@ class App extends React.Component {
                         </form>
                     </div>
                 </section>
-                <TwGraph data={[
-                    this.state.sentiments.positive, 
-                    this.state.sentiments.mixed,
-                    this.state.sentiments.neutral,
-                    this.state.sentiments.negative]}
-                    width={500}
-                    height={500} />  
-            </div>
-        );
+		) : (
+		<TwGraph data={newData} />
+            	)
+    	    	}
+	    </div>
+    	)
     }
 }
 

@@ -1,4 +1,32 @@
 import React from 'react';
+import { Bar } from 'react-chartjs-2';
+
+export default class TwGraph extends React.Component {
+    render() {
+    	const newData = this.props.data;
+    	// var data = this.props.data;
+    	return ( 
+	    < div >
+	    < Bar 
+		data = {newData}
+		options = {{
+		    title: {
+			display: true,
+			text: 'Average Rainfall per month',
+			fontSize: 20
+		    },
+		    legend: {
+			display: true,
+			position: 'right'
+		    }
+		}}
+	    />
+	    </div>
+	);
+    }
+}
+
+/*import React from 'react';
 import { transition, axisLeft }  from "d3";
 import { scaleLinear } from "d3-scale";
 import { max } from 'd3-array';
@@ -63,13 +91,8 @@ class TwGraph extends React.Component {
     }
 
     render() {
-        return (
-            <section id="tw-graph">
-                <svg ref={node => this.node = node}>
-                </svg>
-            </section>           
-        );
+        return <svg ref={node => this.node = node}width={500} height={500}></svg>
     }
 }
 
-export default TwGraph;
+export default TwGraph;*/
