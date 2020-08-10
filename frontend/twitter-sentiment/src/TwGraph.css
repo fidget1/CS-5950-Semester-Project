@@ -4,4 +4,10 @@
 
 #tw-graph {
     min-height: 100vh;
+    background-color: var(--bkgd-light);
+}
+
+#tw-graph-container {
+    max-width: 80%;
+    margin: auto;
 }

@@ -146,11 +146,30 @@ class App extends React.Component {
 
         return updatedSentiments;
     }
+    
     // ===============================================================================
     // RENDER
     // ===============================================================================
 
     render() {
+        const newData = {
+            labels: ['January', 'February', 'March',
+                     'April'],
+            datasets: [
+                {
+                    label: 'Rainfall',
+                    backgroundColor: 'rgba(75,192,192,1)',
+                    borderColor: 'rgba(0,0,0,1)',
+                    borderWidth: 2,
+                    data: [
+                        this.state.sentiments.positive,
+                        this.state.sentiments.mixed,
+                        this.state.sentiments.neutral,
+                        this.state.sentiments.negative
+                    ]
+                }
+            ]
+        }
         return (
             <div>
                 <section id="tw-form">
@@ -165,13 +184,7 @@ class App extends React.Component {
                         </form>
                     </div>
                 </section>
-                <TwGraph data={[
-                    this.state.sentiments.positive, 
-                    this.state.sentiments.mixed,
-                    this.state.sentiments.neutral,
-                    this.state.sentiments.negative]}
-                    width={500}
-                    height={500} />  
+                <TwGraph data={newData}/>
             </div>
         );
     }

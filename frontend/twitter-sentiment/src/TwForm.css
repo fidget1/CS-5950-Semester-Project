@@ -4,7 +4,7 @@
 
 #tw-form {
     min-height: 100vh;
-    background-color: var(--bk-dark);
+    background-color: var(--bkgd-dark);
 }
 
 #tw-form-container {

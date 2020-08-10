@@ -4,8 +4,8 @@
 
 :root {
   /* Body-colors */
-  --bk-dark: #02141f;
-  --bk-light: #d3d3d3;
+  --bkgd-dark: #02141f;
+  --bkgd-light: #073a5a;
 
   /* Window-colors */
   --window-light: #1da1f2;
