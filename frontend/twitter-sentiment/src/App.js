@@ -39,20 +39,20 @@ class App extends React.Component {
     // ===============================================================================
 
     addData(result) {
-	let tweets = result.map(res => {return JSON.parse(res)})
-	let formatted = tweets.map(tweet => {
-		let retval = {
-			documentSentiment: {
-				score: tweet.score, 
-				magnitude: tweet.magnitude
-			},
-			text: tweet.text
-		}
-		return retval
-	})
-	console.log(formatted)
+        let tweets = result.map(res => {return JSON.parse(res)})
+        let formatted = tweets.map(tweet => {
+            let retval = {
+                documentSentiment: {
+                    score: tweet.score, 
+                    magnitude: tweet.magnitude
+                },
+                text: tweet.text
+            }
+            return retval
+        })
+        console.log(formatted);
 
-	return formatted
+        return formatted;
     }
 
     clearData() {
@@ -79,16 +79,16 @@ class App extends React.Component {
 
     // Repeatedly calls flask until flasks returns processing: false
     handleCallToFlask() {
-	const encodedValue = encodeURIComponent("obama")
+	    const encodedValue = encodeURIComponent("obama");
         fetch(`http://34.70.201.210/app/api?q=${encodedValue}`)
         .then(res => res.json())
         .then(
             // On success
             (result) => {
                 let newData = this.addData(result)
-		newData.forEach(data => {
-		    this.updateSentiment(data.documentSentiment)
-		})
+		        newData.forEach(data => {
+		            this.updateSentiment(data.documentSentiment)
+		        })
                 this.setState({
                     processing: true, // result.processing,
                     data: this.state.data.concat(newData),
@@ -162,40 +162,39 @@ class App extends React.Component {
     // ===============================================================================
 
     render() {
-	const newData = {
-		labels: ['January', 'February', 'March', 'April'],
-		datasets: [{
-			label: 'Rainfall',
-			backgroundColor: 'rgba(75,192,192,1)',
-			borderColor: 'rgba(0,0,0,1)',
-			borderWidth: 2,
-			data: [
-				this.state.sentiments.positive,
-				this.state.sentiments.mixed,
-				this.state.sentiments.neutral,
-				this.state.sentiments.negative
-			]
-		}]
-	}
+        const newData = {
+            labels: ['January', 'February', 'March', 'April'],
+            datasets: [{
+                label: 'Rainfall',
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: [
+                    this.state.sentiments.positive,
+                    this.state.sentiments.mixed,
+                    this.state.sentiments.neutral,
+                    this.state.sentiments.negative
+                ]
+            }]
+        }
         return (
             <div>
-		{ this.state.filter === "" || !this.state.processing ? (
-                <section id="tw-form">
-                    <div id="tw-form-container">
-                        <h3>Filter Input</h3>
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="tw-form-box">
-                                <input type="text" value={this.state.filter} onChange={this.handleChange} placeholder="e.g. Fortnite" required/>
-                                <label>Filter</label>
-                            </div>
-                            <input type="submit" value="Submit"/>
-                        </form>
-                    </div>
-                </section>
-		) : (
-		<TwGraph data={newData} />
-            	)
-    	    	}
+            { 
+                this.state.filter === "" || !this.state.processing ? (
+                    <section id="tw-form">
+                        <div id="tw-form-container">
+                            <h3>Filter Input</h3>
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="tw-form-box">
+                                    <input type="text" value={this.state.filter} onChange={this.handleChange} placeholder="e.g. Fortnite" required/>
+                                    <label>Filter</label>
+                                </div>
+                                <input type="submit" value="Submit"/>
+                            </form>
+                        </div>
+                    </section>
+		        ) : (<TwGraph data={newData} />)
+            }
 	    </div>
     	)
     }
