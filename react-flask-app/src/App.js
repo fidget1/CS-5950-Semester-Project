@@ -164,7 +164,7 @@ class App extends React.Component {
         const newData = {
             labels: ['Positive', 'Mixed', 'Neutral', 'Negative'],
             datasets: [{
-                label: 'Rainfall',
+                label: '# of Tweets',
                 backgroundColor: '#1da1f2',
                 borderColor: 'rgba(0,0,0,1)',
                 borderWidth: 2,
