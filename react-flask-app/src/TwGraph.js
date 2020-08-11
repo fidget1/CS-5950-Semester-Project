@@ -3,7 +3,8 @@ import { Bar } from 'react-chartjs-2';
 
 export default class TwGraph extends React.Component {
     render() {
-    	const newData = this.props.data;
+        const newData = this.props.data;
+        const graphTitle = this.props.title;
     	return ( 
             <div>
             <Bar 
@@ -11,7 +12,7 @@ export default class TwGraph extends React.Component {
                 options = {{
                     title: {
                         display: true,
-                        text: 'Average Rainfall per month',
+                        text: `Sentiment data for: "${graphTitle}"`,
                         fontSize: 20
                     },
                         legend: {

@@ -79,7 +79,8 @@ class App extends React.Component {
 
     // Repeatedly calls flask until flasks returns processing: false
     handleCallToFlask() {
-	    const encodedValue = encodeURIComponent("obama");
+        const encodedValue = encodeURIComponent(this.state.filter);
+        console.log("submitting: " + encodedValue);
         fetch(`http://34.70.201.210/app/api?q=${encodedValue}`)
         .then(res => res.json())
         .then(
@@ -161,10 +162,10 @@ class App extends React.Component {
 
     render() {
         const newData = {
-            labels: ['January', 'February', 'March', 'April'],
+            labels: ['Positive', 'Mixed', 'Neutral', 'Negative'],
             datasets: [{
                 label: 'Rainfall',
-                backgroundColor: 'rgba(75,192,192,1)',
+                backgroundColor: '#1da1f2',
                 borderColor: 'rgba(0,0,0,1)',
                 borderWidth: 2,
                 data: [
@@ -175,6 +176,8 @@ class App extends React.Component {
                 ]
             }]
         }
+
+        const graphTitle = this.state.filter;
         
         return (
             <div>
@@ -192,7 +195,7 @@ class App extends React.Component {
                             </form>
                         </div>
                     </section>
-		        ) : (<TwGraph data={newData} />)
+		        ) : (<TwGraph data={newData} title={graphTitle}/>)
             }
 	    </div>
     	)
